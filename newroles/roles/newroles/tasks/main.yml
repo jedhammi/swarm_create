@@ -1,0 +1,26 @@
+---
+# tasks file for newroles
+
+#- include: addgroup.yml
+ 
+#- include: adduser.yml
+  
+#- include: nfsServer-cfg.yml
+#  when: inventory_hostname in groups['nfs_server']
+
+#- include: nfsClient-cfg.yml
+#  when: inventory_hostname in groups['nfs_client']
+
+- include: managerNode.yml
+#- include: logratae-cfg.yml
+
+
+
+
+
+
+
+
+
+
+

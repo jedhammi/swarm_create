@@ -1,0 +1,70 @@
+all:
+
+# VARIABLES Section
+#------------------------------------------------------------#
+  vars:
+    
+     
+# User Variables
+#------------------------------------------------------------#
+    user:
+    - name: jenkins
+      password: "$6$mysecretsalt$6bIjBq56BukybsSm4pvH7G5/1EGRUOqq.vSm.BKYBXjfe/NP6XJl.DkJirmUW7cZeRu5QaYveXuinpAM/D3ME/"
+      group: jenkins
+      uid: 2500
+
+    - name: sfadmin
+      password: "$6$mysecretsalt$6bIjBq56BukybsSm4pvH7G5/1EGRUOqq.vSm.BKYBXjfe/NP6XJl.DkJirmUW7cZeRu5QaYveXuinpAM/D3ME/"
+      group: sfadmin
+      uid: 1030
+
+# Group variables
+#------------------------------------------------------------#
+    group:
+    - name: jenkins
+      gid: 2500
+    - name: sfadmin
+      gid:  1030
+
+# NFS share point informations:
+#------------------------------------------------------------#
+# Server export point 
+    nfsServer_share_point: /nx-data/nfsServer
+        
+# Client share point       
+    nfsClient_share_point: /nx-data/nfsClient
+
+# Hosts informations:
+#------------------------------------------------------------# 
+# NFS server hosts
+    nfsServerHosts: 192.168.239.141
+# NFS client hosts:
+    nfsClientHosts: "*"
+
+# Master swarm nodes
+    master_node: 192.168.239.141
+# Workers swarm nodes    
+    workers_node1: 192.168.239.134
+    #workers_node2: 192.168.239.140    
+
+# Mount options:
+#------------------------------------------------------------#
+# NFS mount options
+    nfs_mount_opt: (rw,sync,no_root_squash,no_subtree_check,insecure)
+
+# Contab options:
+#------------------------------------------------------------#   
+    contab_opt: 0 0 * * * root /usr/sbin/logrotate -f /etc/logrotate.d/logrotate.cfg
+        
+        
+# NFS HOSTS GROUPS 
+#------------------------------------------------------------#
+# NFS_SERVER
+nfs_server:
+  hosts:
+    192.168.239.141:
+# NFS_CLIENT   
+nfs_client:
+  hosts:
+    192.168.239.134:
+    #192.168.239.140:

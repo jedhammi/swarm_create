@@ -1,0 +1,9 @@
+
+- name: add user
+  user:
+    name: "{{ item.name }}"
+    group: "{{ item.group }}"
+    password: "{{ item.password }}"
+    uid: "{{ item.uid }}"
+    state: present
+  loop: "{{ user }}"

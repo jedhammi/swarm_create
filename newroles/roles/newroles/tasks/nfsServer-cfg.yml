@@ -1,0 +1,33 @@
+- name: Install packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - nfs-utils
+    - rpcbind  
+
+- name: Start and enabled installed services
+  service:
+    name: "{{ item }}"      
+    state: started
+    enabled: yes
+  loop:
+    - nfs-server
+    - rpcbind   
+
+- name: Create NFS share
+  file:
+    path: "{{ nfsServer_share_point }}"
+    state: directory
+    mode: '0755'
+    owner: nfsnobody
+    group: nfsnobody
+
+
+- name: Configure sharing points
+  lineinfile:
+    path: /etc/exports
+    state: present
+    line: "{{ nfsServer_share_point }} {{ nfsClientHosts }}{{ nfs_mount_opt }}"
+  notify: restart nfs server 
+

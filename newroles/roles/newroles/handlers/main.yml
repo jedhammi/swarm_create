@@ -1,0 +1,21 @@
+---
+# handlers file for newroles
+- name: restart nfs server
+  service:
+    name: "{{ item }}"
+    state: restarted
+  loop:
+    - nfs-server
+    - rpcbind   
+
+- name: restart nfs
+  service:
+    name: "{{ item }}"
+    state: restarted
+  loop:
+    - nfs
+    - rpcbind       
+
+- name: mount point
+  command : mount -a
+

@@ -1,0 +1,30 @@
+- name: Check if Swarm has already been Initialized
+  shell: docker node ls
+  register: swarm_status
+  ignore_errors: true
+  when: inventory_hostname == master_node
+ 
+- name: Docker swarm init
+  command: "docker swarm init"
+  when:
+    - inventory_hostname == master_node
+    - swarm_status.rc != 0
+  
+- name: get join token worker
+  command: "docker swarm join-token worker -q"
+  register: token_worker
+  when: inventory_hostname == master_node
+
+- set_fact:    
+    token_wk: "{{token_worker.stdout}}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ play_hosts }}"
+  run_once: yes
+
+
+- name: add node worker
+  command: "docker swarm join --token {{token_wk}} {{master_node}}:2377"
+  when: inventory_hostname != master_node
+  register: rslt
+
+

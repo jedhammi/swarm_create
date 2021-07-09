@@ -1,0 +1,26 @@
+- name: Install packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - nfs-utils
+    - rpcbind
+
+- name: Create the NFS directory mount point
+  file:
+    path: "{{ nfsClient_share_point }}"
+    state: directory
+    mode: '0755'
+    owner: nfsnobody
+    group: nfsnobody
+
+- name: Configure permanently mount point
+  lineinfile:
+    path: /etc/fstab
+    state: present
+    line: "{{ nfsServerHosts }}:{{ nfsServer_share_point }} {{ nfsClient_share_point }} nfs defaults 0 0 "
+  notify: mount point
+
+
+
+

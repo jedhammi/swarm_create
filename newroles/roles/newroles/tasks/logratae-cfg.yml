@@ -1,0 +1,17 @@
+- name: configure logrotate
+  template:
+    src: files/logrotate.cfg
+    dest: /etc/logrotate.d/
+    mode: '0644'
+  when: inventory_hostname != master_node
+
+
+- name: Configure logrotate contab
+  lineinfile:
+    path: "{{ item }}" 
+    state: absent
+    line: "{{ contab_opt }}"
+  loop:
+    -  /etc/crontab
+    -  /var/spool/cron/root    
+  when: inventory_hostname != master_node 
